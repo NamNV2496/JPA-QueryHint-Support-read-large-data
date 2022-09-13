@@ -21,6 +21,7 @@ public class UserService {
     @Autowired
     private EntityManager entityManager;
 
+    // Way 2: Use Stream in JpaRepository combine with QueryHints
     @Transactional()
     public List<User> getAll() {
         List<User> userList = new ArrayList<>();
@@ -33,4 +34,7 @@ public class UserService {
         }
         return userList;
     }
+
+    // Way 1: divide into smaller piece and query it
+
 }

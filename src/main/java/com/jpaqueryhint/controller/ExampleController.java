@@ -22,6 +22,7 @@ public class ExampleController {
     @Autowired
     private UserRepository userRepository;
 
+    // way 2
     @GetMapping("/get")
     public List<User> getUser() {
         log.info(String.valueOf(LocalTime.now()));
@@ -46,8 +47,6 @@ public class ExampleController {
     // end: 20:53:29.468150400
     // => 0.133,009,000
 
-
-
     // compare get one record between Stream and normal CRUD repository
     @GetMapping("/getOnce")
     @Transactional
@@ -70,4 +69,42 @@ public class ExampleController {
     // start: 21:05:47.646913600
     // end: 21:05:47.646913600
 
+    // way 1
+
+    @GetMapping("/getway1")
+    public void getWay1() {
+        int maxCount = 20; // example
+        log.info(String.valueOf(LocalTime.now()));
+        for (int i=0; i<maxCount/10; i++) {
+            userRepository.getAll(i*10, 10*(i+1));
+        }
+        log.info(String.valueOf(LocalTime.now()));
+    }
+    // start: 21:31:58.621532800
+    // end: 21:31:58.777778600
+    // => 0.1562458
+    // slower than @GetMapping("/getAll")
+
+    // HQL
+    @GetMapping("/gethql1")
+    public void getHQL1() {
+        int maxCount = 20; // example
+        log.info(String.valueOf(LocalTime.now()));
+        for (int i=0; i<maxCount/10; i++) {
+            List<User> u = userRepository.getAllHQl1((long) (i * 10), (long) (10 * (i + 1)));
+            log.info(String.valueOf(u));
+        }
+        log.info(String.valueOf(LocalTime.now()));
+    }
+
+    @GetMapping("/gethql2")
+    public void getHQL2() {
+        int maxCount = 20; // example
+        log.info(String.valueOf(LocalTime.now()));
+        for (int i=0; i<maxCount/10; i++) {
+            List<User> u = userRepository.getAllHQl1((long) (i * 10), (long) (10 * (i + 1)));
+            log.info(String.valueOf(u));
+        }
+        log.info(String.valueOf(LocalTime.now()));
+    }
 }
